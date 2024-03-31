@@ -2,6 +2,7 @@ package ru.brikster.chatty.prefix;
 
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
+import ru.brikster.chatty.api.chat.prefix.PrefixProvider;
 
 import javax.inject.Singleton;
 

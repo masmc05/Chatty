@@ -13,6 +13,7 @@ import eu.okaeri.configs.yaml.snakeyaml.YamlSnakeYamlConfigurer;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.yaml.snakeyaml.DumperOptions;
@@ -28,6 +29,7 @@ import org.yaml.snakeyaml.reader.StreamReader;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.resolver.Resolver;
 import ru.brikster.chatty.api.chat.message.strategy.MessageTransformStrategy;
+import ru.brikster.chatty.api.event.ChattyPrefixProviderPreRegisterEvent;
 import ru.brikster.chatty.chat.component.impl.ChainPlaceholdersComponentTransformer;
 import ru.brikster.chatty.chat.component.impl.PlaceholdersComponentTransformer;
 import ru.brikster.chatty.chat.component.impl.RelationalPlaceholdersComponentTransformer;
@@ -74,7 +76,7 @@ import ru.brikster.chatty.notification.NotificationTicker;
 import ru.brikster.chatty.notification.ScheduledExecutorNotificationTicker;
 import ru.brikster.chatty.prefix.LuckpermsPrefixProvider;
 import ru.brikster.chatty.prefix.NullPrefixProvider;
-import ru.brikster.chatty.prefix.PrefixProvider;
+import ru.brikster.chatty.api.chat.prefix.PrefixProvider;
 import ru.brikster.chatty.prefix.VaultPrefixProvider;
 import ru.brikster.chatty.proxy.DummyProxyService;
 import ru.brikster.chatty.proxy.ProxyService;
@@ -260,6 +262,23 @@ public final class GeneralGuiceModule extends AbstractModule {
     @Provides
     @Singleton
     public PrefixProvider prefixProvider(ProxyConfig proxyConfig) {
+        ChattyPrefixProviderPreRegisterEvent event = new ChattyPrefixProviderPreRegisterEvent();
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.getPrefixProvider() != null) {
+            PrefixProvider provider = event.getPrefixProvider();
+            JavaPlugin plugin1;
+            try {
+                plugin1 = JavaPlugin.getProvidingPlugin(provider.getClass());
+            } catch (Exception ignored) {
+                plugin1 = null;
+            }
+            if (plugin1 != null) {
+                plugin.getLogger().log(Level.INFO, "Using " + plugin1.getName() + " as prefix provider");
+            } else {
+                plugin.getLogger().log(Level.INFO, "Using custom prefix provider");
+            }
+            return provider;
+        }
         boolean hasLuckPerms = Bukkit.getPluginManager().isPluginEnabled("LuckPerms");
         boolean hasVault = Bukkit.getPluginManager().isPluginEnabled("Vault") && isVaultChatRegistered();
         if (hasLuckPerms && (!hasVault || !proxyConfig.isEnable())) {

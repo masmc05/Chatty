@@ -4,6 +4,7 @@ import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import ru.brikster.chatty.api.chat.prefix.PrefixProvider;
 
 import javax.inject.Singleton;
 import java.util.Objects;

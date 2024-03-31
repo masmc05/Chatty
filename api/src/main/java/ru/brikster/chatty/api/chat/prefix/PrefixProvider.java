@@ -1,4 +1,4 @@
-package ru.brikster.chatty.prefix;
+package ru.brikster.chatty.api.chat.prefix;
 
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;

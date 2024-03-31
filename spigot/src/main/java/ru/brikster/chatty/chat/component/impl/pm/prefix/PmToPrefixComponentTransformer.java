@@ -2,7 +2,7 @@ package ru.brikster.chatty.chat.component.impl.pm.prefix;
 
 import ru.brikster.chatty.chat.component.impl.prefix.AbstractPrefixComponentTransformer;
 import ru.brikster.chatty.convert.component.ComponentStringConverter;
-import ru.brikster.chatty.prefix.PrefixProvider;
+import ru.brikster.chatty.api.chat.prefix.PrefixProvider;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

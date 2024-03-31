@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.brikster.chatty.chat.component.ComponentTransformer;
 import ru.brikster.chatty.chat.component.context.SinglePlayerTransformContext;
 import ru.brikster.chatty.convert.component.ComponentStringConverter;
-import ru.brikster.chatty.prefix.PrefixProvider;
+import ru.brikster.chatty.api.chat.prefix.PrefixProvider;
 import ru.brikster.chatty.util.AdventureUtil;
 import ru.brikster.chatty.util.ObjectUtil;
 
